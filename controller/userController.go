@@ -80,42 +80,42 @@ func Login(c *gin.Context) {
 		})
 	}
 
-	email := requestUser.Email
+	name := requestUser.Name
 	password := requestUser.Password
 
 	//name := c.PostForm("name")
 
-	if len(email) == 0 {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{
-			"code":    42201,
-			"message": "邮箱错误",
+	if len(name) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    40002,
+			"message": "Wrong Name",
 		})
 		return
 	}
 
 	if len(password) < 6 {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{
-			"code":    42202,
-			"message": "密码不能少于6位",
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    40002,
+			"message": "Password needs to be more than 6 characters",
 		})
 		return
 	}
 
 	var user model.User
-	dbuser.Where("email = ?", email).First(&user)
-	if user.ID == 0 {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{
-			"code":    42203,
-			"message": "用户不存在",
+	dbUser.Where("name = ?", name).First(&user)
+	if len(user.Uid) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    40002,
+			"message": "User not found",
 		})
 		return
 	}
 
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{
-			"code":    42204,
-			"message": "密码错误",
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    40002,
+			"message": "Wrong Password",
 		})
 		return
 	}
@@ -124,7 +124,7 @@ func Login(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code":    50000,
-			"message": "系统错误",
+			"message": "System error",
 		})
 		log.Printf("Token generate error: %v", err) //打印错误日志
 		return
