@@ -34,7 +34,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		userUid := claims.UserUid
 		DB := common.GetUserDB()
 		var user model.User
-		DB.First(&user, userUid) //find user from database
+		DB.Where("Uid = ?", userUid).Find(&user)
 
 		if len(user.Uid) == 0 {
 			c.JSON(http.StatusUnauthorized, gin.H{

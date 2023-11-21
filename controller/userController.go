@@ -123,27 +123,40 @@ func Login(c *gin.Context) {
 	token, err := common.ReleaseToken(user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    50000,
+			"code":    50002,
 			"message": "System error",
 		})
 		log.Printf("Token generate error: %v", err) //打印错误日志
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"code": 20000,
-		"data": gin.H{
-			"token": token,
-		},
-		"message": "登录成功",
-	})
-
 	http.SetCookie(c.Writer, &http.Cookie{
 		Name:     "jwt",
 		Value:    token,
 		HttpOnly: true,
 		Path:     "/",
-		MaxAge:   3600, // 3600s (1 h)
+		MaxAge:   3600 * 1 * 24, // 24 h
+	})
+
+	/*
+		jsCookie, errJsCookie := c.Cookie("jwt")
+		if errJsCookie != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"code":    50002,
+				"message": errJsCookie,
+			})
+			return
+		}
+	*/ //get a long time cookie
+
+	c.JSON(http.StatusOK, gin.H{
+		"code": 20000,
+		"data": gin.H{
+			"token": token,
+			//"cookie": jsCookie,
+			"data": user,
+		},
+		"message": "login successfully",
 	})
 
 }
