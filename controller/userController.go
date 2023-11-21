@@ -138,4 +138,21 @@ func Login(c *gin.Context) {
 		"message": "登录成功",
 	})
 
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     "jwt",
+		Value:    token,
+		HttpOnly: true,
+		Path:     "/",
+		MaxAge:   3600, // 3600s (1 h)
+	})
+
+}
+
+func Info(c *gin.Context) {
+	user, _ := c.Get("user") //get user from key "user"
+	c.JSON(http.StatusOK, gin.H{
+		"data": gin.H{
+			"user": user,
+		},
+	})
 }

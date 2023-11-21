@@ -5,29 +5,27 @@ import (
 	"generale-go/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strings"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		tokenString := c.GetHeader("Authorization") //from Header get token
-
-		if tokenString == "" || !strings.HasPrefix(tokenString, "Bearer ") {
+		tokenString, errTokenString := c.Cookie("jwt")
+		println(tokenString)
+		if errTokenString != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"code":    40101,
-				"message": "Insufficient permissions",
+				"message": "Insufficient permissions1",
+				"error":   errTokenString,
 			})
 			return
 		}
-
-		tokenString = tokenString[7:] // remove Bearer
 
 		token, claims, err := common.ParseToken(tokenString)
 		if err != nil || !token.Valid {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"code":    40101,
-				"message": "Insufficient permissions",
+				"message": "Insufficient permissions2",
 			})
 			return
 		}
@@ -41,7 +39,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		if len(user.Uid) == 0 {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"code":    40101,
-				"message": "Insufficient permissions",
+				"message": "Insufficient permissions3",
 			})
 			return
 		}

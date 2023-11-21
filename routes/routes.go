@@ -1,7 +1,16 @@
 package routes
 
-import "github.com/gin-gonic/gin"
+import (
+	"generale-go/controller"
+	"generale-go/middleware"
+	"github.com/gin-gonic/gin"
+)
 
-func SetupRouter(engin *gin.Engine) {
-	engine.POST("/user/register", controller.Register())
+func SetupRouter(engine *gin.Engine) {
+
+	//User
+	engine.POST("/user/register", controller.Register)
+	engine.POST("/user/login", controller.Login)
+	engine.GET("/user/userinfo", middleware.AuthMiddleware(), controller.Info)
+
 }
