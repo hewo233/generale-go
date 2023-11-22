@@ -8,6 +8,9 @@ import (
 
 func SetupRouter(engine *gin.Engine) {
 
+	//ws
+	engine.GET("/ws", gin.WrapF(WebsocketHandler))
+
 	//User
 	engine.POST("/user/register", controller.Register)
 	engine.POST("/user/login", controller.Login)
