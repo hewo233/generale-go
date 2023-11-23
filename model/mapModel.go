@@ -19,6 +19,6 @@ type Cell struct {
 type MapModel struct {
 	Width  int      `json:"width"`
 	Height int      `json:"height"`
-	Seed   int      `json:"seed"`
+	Seed   string   `json:"seed"`
 	Cells  [][]Cell `json:"cells"`
 }
