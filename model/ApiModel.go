@@ -14,9 +14,9 @@ type EventBinaryChunkDetail struct {
 }
 
 type GameUpdateMapDetail struct {
-	Length      int                 `json:"length"`
-	BlocksBegin int                 `json:"blocksBegin"`
-	Blocks      GameUpdateMapBlocks `json:"blocks"`
+	Length      int                   `json:"length"`
+	BlocksBegin int                   `json:"blocksBegin"`
+	Blocks      []GameUpdateMapBlocks `json:"blocks"`
 }
 
 type GameUpdateMapBlocks struct {
@@ -29,9 +29,9 @@ type GameUpdateMapBlocks struct {
 }
 
 type GameUpdateActionQueueDetail struct {
-	Length     int                         `json:"length"`
-	QueueBegin int                         `json:"queueBegin"`
-	Action     GameUpdateActionQueueAction `json:"action"`
+	Length     int                           `json:"length"`
+	QueueBegin int                           `json:"queueBegin"`
+	Action     []GameUpdateActionQueueAction `json:"action"`
 }
 
 type GameUpdateActionQueueAction struct {
@@ -42,10 +42,10 @@ type GameUpdateActionQueueAction struct {
 }
 
 type GameFullMapDetail struct {
-	Rows        int               `json:"rows"`
-	Cols        int               `json:"cols"`
-	BlocksBegin int               `json:"blocksBegin"`
-	Blocks      GameFullMapBlocks `json:"blocks"`
+	Rows        int                 `json:"rows"`
+	Cols        int                 `json:"cols"`
+	BlocksBegin int                 `json:"blocksBegin"`
+	Blocks      []GameFullMapBlocks `json:"blocks"`
 }
 
 type GameFullMapBlocks struct {
